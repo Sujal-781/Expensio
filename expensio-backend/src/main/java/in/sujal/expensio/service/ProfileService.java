@@ -13,13 +13,18 @@ import java.util.UUID;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
-
+    private final EmailService emailService;
     public ProfileDTO registerProfile(ProfileDTO profileDTO){
         // Here we convert profileDTO to ProfileEntity
         // save it using profileRepository and then convert it back to profileDTO
         ProfileEntity newProfile = toEntity(profileDTO);
         newProfile.setActivationToken(UUID.randomUUID().toString());
         newProfile  = profileRepository.save(newProfile);
+        // Send activation email
+        String activationLink = "http://localhost:8080/api/v1.0/activate?token=" + newProfile.getActivationToken();
+        String subject = "Activate your Expensio account";
+        String body = "Click on link to activate your Expensio account: " + activationLink;
+        emailService.sendEmail(newProfile.getEmail(), subject, body);
         return toDTO(newProfile);
     }
 
