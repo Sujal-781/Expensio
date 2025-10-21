@@ -4,6 +4,7 @@ import in.sujal.expensio.dto.ProfileDTO;
 import in.sujal.expensio.entity.ProfileEntity;
 import in.sujal.expensio.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,6 +15,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
     public ProfileDTO registerProfile(ProfileDTO profileDTO){
         // Here we convert profileDTO to ProfileEntity
         // save it using profileRepository and then convert it back to profileDTO
@@ -33,6 +35,7 @@ public class ProfileService {
                 .id(profileDTO.getId())
                 .fullname(profileDTO.getFullname())
                 .email(profileDTO.getEmail())
+                .password(passwordEncoder.encode(profileDTO.getPassword()))
                 .profileImageUrl(profileDTO.getProfileImageUrl())
                 .createdAt(profileDTO.getCreatedAt())
                 .updatedAt(profileDTO.getUpdatedAt())
