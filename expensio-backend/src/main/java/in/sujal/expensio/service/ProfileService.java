@@ -4,6 +4,7 @@ import in.sujal.expensio.dto.AuthDTO;
 import in.sujal.expensio.dto.ProfileDTO;
 import in.sujal.expensio.entity.ProfileEntity;
 import in.sujal.expensio.repository.ProfileRepository;
+import in.sujal.expensio.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ public class ProfileService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     public ProfileDTO registerProfile(ProfileDTO profileDTO){
         // Here we convert profileDTO to ProfileEntity
@@ -115,4 +117,6 @@ public class ProfileService {
             throw new RuntimeException("Invalid email or password");
         }
     }
+
+
 }
