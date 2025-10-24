@@ -15,7 +15,7 @@ import java.time.LocalTime;
 public class CategoryDTO {
 
     private Long id;
-    private String profileId;
+    private Long profileId;
     private String name;
     private String icon;
     private String type;
