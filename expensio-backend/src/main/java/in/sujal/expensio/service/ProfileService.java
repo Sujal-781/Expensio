@@ -1,15 +1,19 @@
 package in.sujal.expensio.service;
 
+import in.sujal.expensio.dto.AuthDTO;
 import in.sujal.expensio.dto.ProfileDTO;
 import in.sujal.expensio.entity.ProfileEntity;
 import in.sujal.expensio.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -19,6 +23,8 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+
     public ProfileDTO registerProfile(ProfileDTO profileDTO){
         // Here we convert profileDTO to ProfileEntity
         // save it using profileRepository and then convert it back to profileDTO
@@ -96,5 +102,17 @@ public class ProfileService {
                 .createdAt(currentUser.getCreatedAt())
                 .updatedAt(currentUser.getUpdatedAt())
                 .build();
+    }
+
+    public Map<String, Object> authenticateAndGenerateToken(AuthDTO authDTO) {
+        try{
+           authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword()));
+           return Map.of(
+                   "token", "JWT token",
+                   "user", getPublicProfile(authDTO.getEmail())
+           );
+        }catch (Exception e){
+            throw new RuntimeException("Invalid email or password");
+        }
     }
 }
