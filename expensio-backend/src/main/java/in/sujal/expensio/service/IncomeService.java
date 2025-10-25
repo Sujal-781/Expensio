@@ -12,6 +12,7 @@ import in.sujal.expensio.repository.IncomeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -50,6 +51,20 @@ public class IncomeService {
             throw new RuntimeException("Unauthorized to delete this income!");
         }
         incomeRepository.delete(entity);
+    }
+
+    //Get latest 5 incomes for current user
+    public List<IncomeDTO> getLatest5IncomesForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<IncomeEntity> list = incomeRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());
+        return list.stream().map(this::toDTO).toList();
+    }
+
+    //Get total incomes of current user
+    public BigDecimal getTotalIncomesForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        BigDecimal total = incomeRepository.findTotalExpenseByProfileId(profile.getId());
+        return total != null? total : BigDecimal.ZERO;
     }
 
     //helper methods
