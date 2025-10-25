@@ -22,7 +22,7 @@ public class EmailService {
             RestTemplate restTemplate = new RestTemplate();
 
             Map<String, Object> payload = new HashMap<>();
-            payload.put("sender", Map.of("name", "Expensio", "email", "no-reply@expensio.com"));
+            payload.put("sender", Map.of("name", "Expensio", "email", "chsujal8@gmail.com"));
             payload.put("to", List.of(Map.of("email", to)));
             payload.put("subject", subject);
             payload.put("htmlContent", "<html><body>" + body + "</body></html>");
