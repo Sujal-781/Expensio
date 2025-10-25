@@ -4,6 +4,8 @@ WORKDIR /app
 
 # Copy Maven files
 COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
 COPY src ./src
 
 # Package the Spring Boot app
