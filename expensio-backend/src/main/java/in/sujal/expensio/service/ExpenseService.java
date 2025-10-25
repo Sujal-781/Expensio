@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ExpenseService {
@@ -25,6 +28,16 @@ public class ExpenseService {
         ExpenseEntity newExpense = toEntity(dto,profile,category);
         newExpense = expenseRepository.save(newExpense);
         return toDTO(newExpense);
+    }
+
+    //Retrieve all expenses for current month/based on start date and end date
+    public List<ExpenseDTO> getCurrentMonthExpensesForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.withDayOfMonth(1);
+        LocalDate endDate = now.withDayOfMonth(now.lengthOfMonth());
+        List<ExpenseEntity> list = expenseRepository.findByProfileIdAndDateBetween(profile.getId(),startDate,endDate);
+        return list.stream().map(this::toDTO).toList();
     }
 
 
