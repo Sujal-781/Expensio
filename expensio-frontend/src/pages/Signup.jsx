@@ -99,7 +99,7 @@ const Signup = () => {
                                     value={fullName}
                                     onChange={(e) => setFullName(e.target.value)}
                                     label="Full Name"
-                                    placeholder="Jhon Doe"
+                                    placeholder="John Doe"
                                     type="text"
                                 />
 
@@ -153,3 +153,5 @@ const Signup = () => {
         </div>
     )
 }
+
+export default Signup;

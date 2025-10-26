@@ -18,8 +18,8 @@ const Header = () => {
                 <div className="flex items-center justify-between h-20">
                     {/* Logo */}
                     <div className="flex items-center gap-2">
-                        <img src={assets.logo} alt="logo" className="h-10 w-10" />
-                        <span className="text-lg font-bold text-black truncate">Money Manager</span>
+                        <img src={assets.logo} alt="logo" className="h-12 w-12" />
+                        <span className="text-lg font-bold text-black truncate">Expensio</span>
                     </div>
 
                     {/* Desktop Navigation */}
