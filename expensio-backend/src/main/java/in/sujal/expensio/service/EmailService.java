@@ -17,7 +17,13 @@ public class EmailService {
 
     private static final String BREVO_URL = "https://api.brevo.com/v3/smtp/email";
 
+    // Basic email
     public void sendEmail(String to, String subject, String body) {
+        sendEmailWithAttachment(to, subject, body, null, null);
+    }
+
+    // Email with optional attachment
+    public void sendEmailWithAttachment(String to, String subject, String body, byte[] attachment, String filename) {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -27,6 +33,15 @@ public class EmailService {
             payload.put("subject", subject);
             payload.put("htmlContent", "<html><body>" + body + "</body></html>");
 
+            // ✅ Add attachment if provided
+            if (attachment != null && filename != null) {
+                String base64Attachment = Base64.getEncoder().encodeToString(attachment);
+                payload.put("attachment", List.of(Map.of(
+                        "content", base64Attachment,
+                        "name", filename
+                )));
+            }
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("api-key", brevoApiKey);
@@ -34,7 +49,7 @@ public class EmailService {
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(payload, headers);
             ResponseEntity<String> response = restTemplate.postForEntity(BREVO_URL, request, String.class);
 
-            System.out.println("Brevo email response: " + response.getStatusCode());
+            System.out.println("Brevo email response: " + response.getStatusCode() + " " + response.getBody());
 
         } catch (Exception e) {
             e.printStackTrace();
