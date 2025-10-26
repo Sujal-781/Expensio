@@ -55,3 +55,5 @@ const Input = ({label, value, onChange, placeholder, type, isSelect, options}) =
         </div>
     )
 }
+
+export default Input;

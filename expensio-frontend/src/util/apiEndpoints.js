@@ -1,5 +1,5 @@
 export const BASE_URL = "https://expensio-fico.onrender.com/api/v1";
-const CLOUDINARY_CLOUD_NAME = "dhadf5h7j";
+const CLOUDINARY_CLOUD_NAME = "dmpkezxgd";
 
 export const API_ENDPOINTS = {
     LOGIN: "/login",
